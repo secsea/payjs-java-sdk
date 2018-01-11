@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.1/weui.min.css"/>
+    <title>PayJS demo</title>
+</head>
+<body>
+<h1 class="page__title">PayJS demo</h1>
+<div style="padding-top: 50px">
+    <form method="post" action="https://payjs.cn/api/cashier">
+        <input type="text" name="mchid"  th:value="${mchid}" />
+        <input type="text" name="total_fee" th:value="${total_fee}" />
+        <input type="text" name="out_trade_no" th:value="${out_trade_no}" />
+        <input type="text" name="body" th:value="${body}" />
+        <input type="text" name="notify_url" th:value="${notify_url}" />
+        <input type="text" name="callback_url" th:value="${callback_url}" />
+        <input type="text" name="sign" th:value="${sign}" />
+        <div><p>GoGoGo</p></div>
+        <div class="weui-btn-area">
+            <input class="weui-btn weui-btn_primary" type="submit" value="去支付"/>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
