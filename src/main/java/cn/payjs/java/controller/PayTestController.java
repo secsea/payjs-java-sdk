@@ -56,14 +56,14 @@ public class PayTestController {
         ModelAndView mv = new ModelAndView("pay");
 
         String mchid = payJSConfig.getMchid();
-        Integer total_fee = 1;
+        Integer total_fee = (totalFee.multiply(new BigDecimal(100)).intValue());
         String out_trade_no = "order"+System.currentTimeMillis();
-        String notify_url = "https://payjs.cn/help";//请注意，，该路径需要payjs服务器可以直接访问，且http状态码为200。测试地址不行，www.baidu.com也不行
-        String callback_url = "http://xxx.com";
+        String notify_url = "https://payjs.cn/help/";//请注意，，该路径需要payjs服务器可以直接访问，且http状态码为200。测试地址不行，www.baidu.com也不行
+        String callback_url = "https://payjs.cn/help/";
 
         Map<String,String> map = new HashMap<>();
         map.put("mchid", mchid);
-        map.put("total_fee",""+(totalFee.multiply(new BigDecimal(100)).intValue()));
+        map.put("total_fee",""+total_fee);
         map.put("out_trade_no",out_trade_no);
         map.put("body",body);
         map.put("notify_url", notify_url);
