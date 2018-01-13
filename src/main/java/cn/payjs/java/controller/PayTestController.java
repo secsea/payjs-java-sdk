@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,11 +21,11 @@ public class PayTestController {
     private PayJSConfig payJSConfig;
 
     @RequestMapping(value = "nativePay")
-    public ModelAndView nativePay(){
+    public ModelAndView nativePay(Integer money){
         ModelAndView mv = new ModelAndView();
         Map<String,String> map = new HashMap<>();
         map.put("mchid", payJSConfig.getMchid());
-        map.put("total_fee","1");
+        map.put("total_fee",""+money);
         String out_trade_no = "order"+System.currentTimeMillis();
         map.put("out_trade_no",out_trade_no);
         map.put("body","春节大礼包");
@@ -44,20 +45,25 @@ public class PayTestController {
         return mv;
     }
 
+    @RequestMapping(value = "/")
+    public ModelAndView index() {
+
+        return new ModelAndView("index");
+    }
+
     @RequestMapping(value = "/order")
-    public ModelAndView order() {
+    public ModelAndView order(BigDecimal totalFee, String body) {
         ModelAndView mv = new ModelAndView("pay");
 
         String mchid = payJSConfig.getMchid();
         Integer total_fee = 1;
         String out_trade_no = "order"+System.currentTimeMillis();
-        String body = "元旦大礼包";
         String notify_url = "https://payjs.cn/help";//请注意，，该路径需要payjs服务器可以直接访问，且http状态码为200。测试地址不行，www.baidu.com也不行
         String callback_url = "http://xxx.com";
 
         Map<String,String> map = new HashMap<>();
         map.put("mchid", mchid);
-        map.put("total_fee",""+total_fee);
+        map.put("total_fee",""+(totalFee.multiply(new BigDecimal(100)).intValue()));
         map.put("out_trade_no",out_trade_no);
         map.put("body",body);
         map.put("notify_url", notify_url);

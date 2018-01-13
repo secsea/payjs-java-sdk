@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.1/weui.min.css"/>
+    <title>PayJS demo</title>
+</head>
+<body>
+<h1 class="page__title">PayJS demo</h1>
+<div style="padding-top: 50px">
+    <form method="post" action="/order">
+        金额：<input type="text" name="totalFee" />元<br/>
+        标题：<input type="text" name="body" value="微信买单" />
+        <div class="weui-btn-area">
+            <input class="weui-btn weui-btn_primary" type="submit" value="下单"/>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
