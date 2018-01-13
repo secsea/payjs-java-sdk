@@ -10,11 +10,12 @@
 <body>
 <h1 class="page__title">PayJS demo</h1>
 <div style="padding-top: 50px">
-    <form method="post" action="/order">
-        金额：<input type="text" name="totalFee" />元<br/>
-        标题：<input type="text" name="body" value="微信买单" />
+    <form method="post" action="/pay">
+        金额：<input type="text" name="totalFee" value="0.01"/>元<br/>
+        标题：<input type="text" name="body" value="微信买单" /><br/>
+        支付方式：<input type="radio" name="type" value="1" checked="checked"/>扫码支付  <input type="radio" name="type" value="2"/>收银台支付(需在微信中测试)<br/>
         <div class="weui-btn-area">
-            <input class="weui-btn weui-btn_primary" type="submit" value="下单"/>
+            <input class="weui-btn weui-btn_primary" type="submit" value="去支付"/>
         </div>
     </form>
 </div>

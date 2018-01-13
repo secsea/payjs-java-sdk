@@ -16,12 +16,16 @@ fastjson  1.2.39
 
 然后启动PayjsJavaSdkApplication
 
-### 扫码支付
+### 支付测试
 
-打开 http://localhost:8080/nativePay
+打开 http://localhost:8080/
+您将会看到如下
+![支付首页](https://github.com/secsea/payjs-java-sdk/blob/master/img/index.png)
 
+根据您的选择，进行不同的支付测试，扫码支付如下图：
+![扫码支付](https://github.com/secsea/payjs-java-sdk/blob/master/img/nativePay.png)
 
-### 收银台支付 
-收银台支付测试最好部署到服务器上，需要通过微信打开以下地址：
+收银台支付如下图：
+![收银台支付](https://github.com/secsea/payjs-java-sdk/blob/master/img/cashierPay.png)
 
-打开 http://localhost:8080/order
+请注意：收银台支付需要在微信中进行测试 

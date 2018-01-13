@@ -3,6 +3,7 @@ package cn.payjs.java.controller;
 import cn.payjs.java.config.PayJSConfig;
 import cn.payjs.java.util.HttpInvoker;
 import cn.payjs.java.util.SignUtil;
+import cn.payjs.java.util.UnicodeUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -20,15 +22,39 @@ public class PayTestController {
     @Autowired
     private PayJSConfig payJSConfig;
 
+
+    @RequestMapping(value = "/")
+    public ModelAndView index() {
+        return new ModelAndView("index");
+    }
+
+    @RequestMapping(value = "/pay")
+    public ModelAndView pay(BigDecimal totalFee, String body, Integer type, RedirectAttributes redirectAttributes){
+        Integer total_fee = (totalFee.multiply(new BigDecimal(100)).intValue());
+        redirectAttributes.addAttribute("money", total_fee);
+        redirectAttributes.addAttribute("body", body);
+        if(type == 1){
+            return new ModelAndView("redirect:/nativePay");
+        } else if(type == 2){
+            return new ModelAndView("redirect:/cashierPay");
+        }
+        return null;
+    }
+
+    /**
+     * 扫码支付
+     * @param money
+     * @return
+     */
     @RequestMapping(value = "nativePay")
-    public ModelAndView nativePay(Integer money){
+    public ModelAndView nativePay(Integer money, String body){
         ModelAndView mv = new ModelAndView();
         Map<String,String> map = new HashMap<>();
         map.put("mchid", payJSConfig.getMchid());
         map.put("total_fee",""+money);
         String out_trade_no = "order"+System.currentTimeMillis();
         map.put("out_trade_no",out_trade_no);
-        map.put("body","春节大礼包");
+        map.put("body",body);
         map.put("notify_url", "https://payjs.cn/help/");//请注意，，该路径需要payjs服务器可以直接访问，且结果为200。测试地址不行，www.baidu.com也不行
         String md5 = SignUtil.sign(map, payJSConfig.getKey());
         map.put("sign", md5.toUpperCase());
@@ -39,31 +65,31 @@ public class PayTestController {
         if(null != jsonObject && jsonObject.containsKey("qrcode")){
             mv.addObject("qrcode", jsonObject.getString("qrcode"));
             mv.setViewName("result");
-        } else {
-
+        } else if(null != jsonObject && jsonObject.containsKey("msg")){
+            mv.addObject("reason", UnicodeUtil.decodeUnicode(jsonObject.getString("msg")));
+            mv.setViewName("error");
         }
         return mv;
     }
 
-    @RequestMapping(value = "/")
-    public ModelAndView index() {
-
-        return new ModelAndView("index");
-    }
-
-    @RequestMapping(value = "/order")
-    public ModelAndView order(BigDecimal totalFee, String body) {
+    /**
+     * 收银台支付
+     * @param money
+     * @param body
+     * @return
+     */
+    @RequestMapping(value = "/cashierPay")
+    public ModelAndView cashierPay(Integer money, String body) {
         ModelAndView mv = new ModelAndView("pay");
 
         String mchid = payJSConfig.getMchid();
-        Integer total_fee = (totalFee.multiply(new BigDecimal(100)).intValue());
         String out_trade_no = "order"+System.currentTimeMillis();
         String notify_url = "https://payjs.cn/help/";//请注意，，该路径需要payjs服务器可以直接访问，且http状态码为200。测试地址不行，www.baidu.com也不行
         String callback_url = "https://payjs.cn/help/";
 
         Map<String,String> map = new HashMap<>();
         map.put("mchid", mchid);
-        map.put("total_fee",""+total_fee);
+        map.put("total_fee",""+money);
         map.put("out_trade_no",out_trade_no);
         map.put("body",body);
         map.put("notify_url", notify_url);
@@ -73,7 +99,7 @@ public class PayTestController {
         String sign = md5.toUpperCase();
 
         mv.addObject("mchid", mchid);
-        mv.addObject("total_fee", total_fee);
+        mv.addObject("total_fee", money);
         mv.addObject("out_trade_no", out_trade_no);
         mv.addObject("body", body);
         mv.addObject("notify_url", notify_url);
