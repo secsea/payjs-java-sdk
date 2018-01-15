@@ -11,13 +11,13 @@
 <h1 class="page__title">PayJS demo</h1>
 <div style="padding-top: 50px">
     <form method="post" action="https://payjs.cn/api/cashier">
-        <input type="text" disabled="disabled" name="mchid"  th:value="${mchid}" /><br/>
-        <input type="text" disabled="disabled" name="total_fee" th:value="${total_fee}" /><br/>
-        <input type="text" disabled="disabled" name="out_trade_no" th:value="${out_trade_no}" /><br/>
-        <input type="text" disabled="disabled" name="body" th:value="${body}" /><br/>
-        <input type="text" disabled="disabled" name="notify_url" th:value="${notify_url}" /><br/>
-        <input type="text" disabled="disabled" name="callback_url" th:value="${callback_url}" /><br/>
-        <input type="text" disabled="disabled" name="sign" th:value="${sign}" /><br/>
+        <input type="text" name="mchid"  th:value="${mchid}" /><br/>
+        <input type="text" name="total_fee" th:value="${total_fee}" /><br/>
+        <input type="text" name="out_trade_no" th:value="${out_trade_no}" /><br/>
+        <input type="text" name="body" th:value="${body}" /><br/>
+        <input type="text" name="notify_url" th:value="${notify_url}" /><br/>
+        <input type="text" name="callback_url" th:value="${callback_url}" /><br/>
+        <input type="text" name="sign" th:value="${sign}" /><br/>
         <div><p>GoGoGo</p></div><br/>
         <div class="weui-btn-area">
             <input class="weui-btn weui-btn_primary" type="submit" value="去支付"/>
